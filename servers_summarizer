@@ -1,0 +1,28 @@
+#!/bin/bash
+
+
+# Install dependencies if not installed
+for dependency in lolcat figlet
+do
+	type $dependency > /dev/null
+
+	# $? to check the status of the last command run
+	if [ "$?" -ne  0  ]; then  
+		sudo apt-get -y install $dependency
+	fi
+done
+
+
+echo 'Servers reports' | figlet | lolcat
+
+
+# finds hosts in .ssh/config file
+hosts=$(cat ~/.ssh/config | grep -Po "^Host (.*)" | awk '{print $2}')
+
+
+
+for h in $hosts; do
+	echo "Getting infos from : " + $h | lolcat
+done
+
+
