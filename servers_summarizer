@@ -19,10 +19,18 @@ echo 'Servers reports' | figlet | lolcat
 # finds hosts in .ssh/config file
 hosts=$(cat ~/.ssh/config | grep -Po "^Host (.*)" | awk '{print $2}')
 
-
-
 for h in $hosts; do
 	echo "Getting infos from : " + $h | lolcat
+	ssh $h <<-EOF>> report
+	echo "Starting report for : ${h}"
+		uname -a
+
+		df -h 
+		uptime
+		free -mh
+		lscpu | grep -E "^CPU(s)"
+	echo "Ending report for : ${h}"
+	EOF
 done
 
-
+echo "Reports done !"

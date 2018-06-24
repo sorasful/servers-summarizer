@@ -5,7 +5,7 @@ A bash script to train myself and which allows to get reports of servers configu
 
 ## USE IT :  
 
-Allow execution of script
+Allow execution of script :   
 `chmod a+x servers_summarizer` 
 
 Run it :  
