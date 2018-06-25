@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 # Install dependencies if not installed
 for dependency in lolcat figlet
 do
@@ -20,17 +19,28 @@ echo 'Servers reports' | figlet | lolcat
 hosts=$(cat ~/.ssh/config | grep -Po "^Host (.*)" | awk '{print $2}')
 
 for h in $hosts; do
-	echo "Getting infos from : " + $h | lolcat
-	ssh $h <<-EOF>> report
-	echo "Starting report for : ${h}"
+	printf '\n' {1..5}
+	echo "Getting infos from : "  $h | lolcat
+	ssh $h <<-EOF
+	echo -e "Starting report for : \e[1m\e[42m${h}\e[0m"
+	    echo -e "\e[96mDistribution :\e[0m"
 		uname -a
 
-		df -h 
+		echo -e "\e[96mDisk usage : \e[0m"
+		df -h
+
+		echo -e "\e[96mUptime : \e[0m"
 		uptime
+
+		echo -e "\e[96mMemory : \e[0m"
 		free -mh
-		lscpu | grep -E "^CPU(s)"
+
+		echo -e "\e[96mNumber of cpus : \e[0m"
+		lscpu | grep -E "^CPU\(s\)": | awk '{print $2}'
 	echo "Ending report for : ${h}"
 	EOF
 done
+
+
 
 echo "Reports done !"
